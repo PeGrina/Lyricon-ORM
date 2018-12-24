@@ -13,6 +13,34 @@ class L{
 		for($i = 0;$i < 250;$i++){
 			self::$arr[$i] = mysqli_fetch_array($q);
 		}
+		foreach (self::$arr as $key => $value) {
+			if(trim(gettype($value)) != 'array'){
+				unset(self::$arr[$key]);
+			}
+		}
+	}
+	public function tables(){
+		$q = mysqli_query(self::$connection, "SHOW TABLES");
+		$quer = mysqli_fetch_array($q);
+		$arr = [];
+		$i = 0;
+		while($i < 250){
+				$i++;
+				$arr[$i] = mysqli_fetch_array($q);
+		}
+		foreach ($arr as $key => $value) {
+			if(trim(gettype($value)) != 'array'){
+				unset($arr[$key]);
+			}
+		}
+		return $arr;
+	}
+	public function showStruct($table){
+		self::describe($table);
+		return self::$arr;
+	}
+	public function sql($command){
+		mysqli_query(self::$connection, $command);
 	}
 	public function freeze(){
 		self::$freeze = true;
